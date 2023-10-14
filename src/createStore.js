@@ -11,7 +11,7 @@ import { kindOf } from './utils/kindOf'
  * There should only be a single store in your app. To specify how different
  * parts of the state tree respond to actions, you may combine several reducers
  * into a single reducer function by using `combineReducers`.
- * // NODE: reducer
+ * // @note reducer
  * @param {Function} reducer A function that returns the next state tree, given
  * the current state tree and the action to handle.
  *
@@ -22,7 +22,7 @@ import { kindOf } from './utils/kindOf'
  * If you use `combineReducers` to produce the root reducer function, this must be
  * an object with the same shape as `combineReducers` keys.
  * 
- * // NODE: 中间件
+ * // @note 中间件
  * @param {Function} [enhancer] The store enhancer. You may optionally specify it
  * to enhance the store with third-party capabilities such as middleware,
  * time travel, persistence, etc. The only store enhancer that ships with Redux
@@ -38,8 +38,8 @@ export default function createStore(reducer, preloadedState, enhancer) {
   ) {
     throw new Error(
       'It looks like you are passing several store enhancers to ' +
-        'createStore(). This is not supported. Instead, compose them ' +
-        'together to a single function. See https://redux.js.org/tutorials/fundamentals/part-4-store#creating-a-store-with-enhancers for an example.'
+      'createStore(). This is not supported. Instead, compose them ' +
+      'together to a single function. See https://redux.js.org/tutorials/fundamentals/part-4-store#creating-a-store-with-enhancers for an example.'
     )
   }
 
@@ -81,7 +81,7 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * This prevents any bugs around consumers calling
    * subscribe/unsubscribe in the middle of a dispatch.
    */
-  // NOTE: 拷贝一个 listener 防止一个currentListeners有
+  // @note 拷贝一个 listener 防止一个currentListeners有
   function ensureCanMutateNextListeners() {
     if (nextListeners === currentListeners) {
       nextListeners = currentListeners.slice()
@@ -94,13 +94,13 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * 
    * @returns {any} The current state tree of your application.
    */
-  // NOTE: 将state设置为readonly
+  // @note 将state设置为readonly
   function getState() {
     if (isDispatching) {
       throw new Error(
         'You may not call store.getState() while the reducer is executing. ' +
-          'The reducer has already received the state as an argument. ' +
-          'Pass it down from the top reducer instead of reading it from the store.'
+        'The reducer has already received the state as an argument. ' +
+        'Pass it down from the top reducer instead of reading it from the store.'
       )
     }
 
@@ -142,9 +142,9 @@ export default function createStore(reducer, preloadedState, enhancer) {
     if (isDispatching) {
       throw new Error(
         'You may not call store.subscribe() while the reducer is executing. ' +
-          'If you would like to be notified after the store has been updated, subscribe from a ' +
-          'component and invoke store.getState() in the callback to access the latest state. ' +
-          'See https://redux.js.org/api/store#subscribelistener for more details.'
+        'If you would like to be notified after the store has been updated, subscribe from a ' +
+        'component and invoke store.getState() in the callback to access the latest state. ' +
+        'See https://redux.js.org/api/store#subscribelistener for more details.'
       )
     }
 
@@ -161,7 +161,7 @@ export default function createStore(reducer, preloadedState, enhancer) {
       if (isDispatching) {
         throw new Error(
           'You may not unsubscribe from a store listener while the reducer is executing. ' +
-            'See https://redux.js.org/api/store#subscribelistener for more details.'
+          'See https://redux.js.org/api/store#subscribelistener for more details.'
         )
       }
 
@@ -199,7 +199,7 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * Note that, if you use a custom middleware, it may wrap `dispatch()` to
    * return something else (for example, a Promise you can await).
    */
-  // NOTE: 执行action
+  // @note 执行action
   function dispatch(action) {
     if (!isPlainObject(action)) {
       throw new Error(
@@ -227,8 +227,8 @@ export default function createStore(reducer, preloadedState, enhancer) {
     }
 
     const listeners = (currentListeners = nextListeners)
-    // NOTE: 分发执行 listener
-    for (let i = 0; i < listeners.length; i++) {
+    // @note 分发执行 listener
+    for (let i = 0;i < listeners.length;i++) {
       const listener = listeners[i]
       listener()
     }
@@ -296,7 +296,7 @@ export default function createStore(reducer, preloadedState, enhancer) {
           }
         }
 
-        // NOTE: 添加listener订阅
+        // @note 添加listener订阅
         observeState()
         const unsubscribe = outerSubscribe(observeState)
         return { unsubscribe }
